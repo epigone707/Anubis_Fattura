@@ -1,5 +1,5 @@
 # anubis_Fattura
-Malware Analysis
+Malware Analysis of an Anubis instance.
 ## Application metadata
 - Application Name: Fattura
 - Package Name: wocwvy.czyxoxmbauu.slsa
@@ -33,4 +33,141 @@ It also has a signature permission:
 ## Static Analysis
 
 ### Twitter channel
-This malware access <https://twitter[.]com/qweqweqwe> and get an ip address which is encoded in a sequence of simplfied Chinese characters.
+This malware access `https://twitter[.]com/qweqweqwe` and get an ip address which is encoded in a sequence of simplfied Chinese characters.
+
+If needed, it will set the C2 server address to be this ip address. Otherwise, it will use the default C2 server `cdnjs.su`.
+
+### Botnet command
+`wocwvy.czyxoxmbauu.slsa.ukhakhcgifofl` sneds POST request to `http://cdnjs[.]su/o1o/a3.php` or `http://cdnjs[.]su/o1o/a4.php` to receive the botnet commands. It then identifies the commands from the C2 server and performs corresponding malicious tasks. The defualt C2 server is `cdnjs.su`, but it can be changed by accessing the twitter account or a specific botnet command. Below gives a brief summary of all commands.
+
+**cmd= |startinj=[str]|endstartinj**
+
+If the value of "name" is "false" in the pref file "set", then put key-value pair ("lock_inj", str) in pref file "set".
+
+**cmd = Send_GO_SMS|number=[num]|text=[text]**
+
+It sends SMS message with text=[text] to phone number=[num]. Then, make a POST request to `http://cdnjs[.]su/o1o/a6.php.php` with this SMS info. Finally, set ringer mode to be silent and will not vibrate.
+
+**cmd = nymBePsG0**
+
+Make a POST request to `http://cdnjs[.]su/o1o/a6.php`. The POST data is the contacts info(country code, number and name) in the phone.
+
+**cmd = GetSWSGO**
+
+Make a POST request to `http://cdnjs[.]su/o1o/a6.php`. The POST data is the SMS data(sent, inbox, draft) in the phone.
+
+**cmd = GetSWSGO|telbookgotext=[str]|endtextbook**
+
+Send a SMS message to every contact in the contact list with the text [str]. Then it sends a POST request to `http://cdnjs[.]su/o1o/a6.php` to tell the C2 server whether it succeeds or not.
+
+**cmd = getapps**
+
+Get a list of the package name of all installed applications. Make a POST request to `http://cdnjs[.]su/o1o/a6.php`. The POST data is that list.
+
+**cmd = getpermissions**
+
+Get a list of the current state of all permissions i.e. whether they're granted or not. Make a POST request to `http://cdnjs[.]su/o1o/a6.php` with the list.
+
+**cmd = startaccessibility**
+
+If the value of "startRequest" in preferences file "set" contains "Access=0", change it to "Access=1". Then it opens the accessibility settings and request the accessibility.
+
+**cmd = startpermission**
+
+If the value of "startRequest" in Preferences "set" contains "Perm=0", change it to "Perm=1". Then it will ask the user to allow an app to ignore battery optimizations (that is, put them on the whitelist of apps shown by `ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS`).
+
+**cmd =ALERT|title=[title]|text=[content]**
+
+Create an alert dialog with title=[title] and content=[content].
+
+**cmd = PUSH|title=[title]|text=[text]|icon=[appname]**
+
+Post a notification to be shown in the status bar with title=[title] and text=[text]. Get the notification icon from `http://cdnjs[.]su/icon/[appname].png`.
+
+**cmd = startAutoPush|AppName=[appname]|EndAppName**
+
+Post a notification to be shown in the status bar with title="Urgent message!" and text="Confirm your account".
+It will identify the language setting of the phone and show the text in different language. The notification icon is got from `http://cdnjs[.]su/icon/[appname].png`.
+
+**cmd = RequestPermissionInj**
+
+Request Usage access, which allows this malware to track what other apps you're using and how often, as well as your carrier, language settings, and other details.
+
+**cmd = RequestPermissionGPS**
+
+Request gps permission.
+
+**cmd = |ussd=[USSD]]|endUssD**
+
+Make a USSD call to [USSD] and set the ringer mode to be silent and not vibrate. Then make a POST request to `http://cdnjs[.]su/o1o/a6.php` to tell the server that it has finished the call.
+
+**cmd= |sockshost=[host]|user=[user]|pass=[pass]|port=[port]|endssh**
+
+This command starts a SOCKS5 proxy by doing following tasks:
+1. Create a thread(denoted as thread 0) which creates a server socket and bound to the loacl port 34500. Once a client connects, create and start a new thread(denoted as thread 1).
+2. Thread 1 sends a register message to the client. The client could be the threat actor.
+3. Thread 1 receive the destination ip address and port nunmber from the client.
+4. Thread 1 send a response msg to the client.
+5. Thread 1 create a new socket that connect to the destination ip and port. It then constantly forwards all data from the client to the destination. It also create a new thread(denoted as thread 2) to forward the data from the destination to the client. 
+6. After thread 1 starts, thread 0 loads and invokes a method apps.com.app.utils.startSocks with params: (context, [host], [user], [pass], [port]). I don't know how to find the source code of this method(TODO).
+7. Thread 0 also constantly sends a POST request to http://cdnjs[.]su/o1o/a6.php with the proxy server info every 8 seconds. The info contains an SSH local port forwarding command, which is used by the client(threat actor). 
+
+**cmd = stopsocks5**
+
+Stop the SOCKS5 proxy by change the value of "socks" to "stop" in the preference file "set"
+
+**cmd = |spam=[text]|endspam**
+
+Make a POST request to  `http://cdnjs[.]su/o1o/a15.php` to get the target phone numbers and send spam SMS message to those numbers.
+
+**cmd = |recordsound=[seconds]]|endrecord**
+
+Record sound for [seconds] seconds.
+
+**cmd = |replaceurl=[newurl]|endurl**
+
+Change the value of "url" and "urls" to [newurl] in the preference file "set". This command changes the C2 server address that is stored in local storage.
+
+**cmd = |startapplication=[app]|endapp**
+
+Start the [app] application.
+
+**cmd = killBot**
+
+Clear the value of "url", "urls" and "urlInj" in the preference file "set". Then stop the wfveenegvz service.
+
+**cmd = getkeylogger**
+
+Read the file "keys.log", which is a log file of the recorded keystrokes. Then make a POST request to `http://cdnjs[.]su/o1o/a12.php`. The POST data is the unique bot id and the content of the file "keys.log".
+
+The keylogger is implemented in `wocwvy.czyxoxmbauu.slsa.egxltnv `accessibility service. The onAccessibilityEvent function first gets the package name of the accessibilityEvent.
+
+Then it identifies the type of the accessibilityEvent. If it is `TYPE_VIEW_CLICKED`(click event), it stores the keystrokes info and corresponding timestamp in the file `keys.log`. Similarly, it also stores the infomation of view focus event and view text change event.
+
+**cmd = |startrat=[null]|endrat=[websocket]|endurl**
+
+The "rat" in this command means Remote Access Trojan(RAT).
+It send a POST request to `[websocket]/o1o/a2.php` and get the response, the post data is the bot id. The response is the RAT command.
+
+- **RAT_command = opendir:[path]**  
+Get a list of files and folders that is in the local path [path]. Send a POST request to [websocket]/o1o/a2.php. The data is the list.
+- **RAT_command = downloadfile:[file]**  
+Send a POST to `[websocket]/o1o/a1.php`, the POST data is the file [file]. Send a POST to `[websocket]/o1o/a2.php` to tell the server that the task is finished.
+- **RAT_command = deletefilefolder:[file]**  
+Delete the file [file]. Send a POST to `[websocket]/o1o/a2.php` to tell the server that the task is finished.
+- **RAT_command = startscreenVNC**  
+Start a virtual network computing (VNC) that can see the screen of the victim's device. This functionality is implemented in `wocwvy.czyxoxmbauu.slsa.oyqwzkyy.qvhy.jkeggfql` service. It use the API `android.media.projection.MediaProjection` to take a screenshot of the screen and sends it to `[websocket]/o1o/a1.php` via a POST request for every 0.5 second.
+- **RAT_command = stopscreenVNC**  
+Stop the VNC.
+- **RAT_command = startsound**  
+Start to record the sound.
+- **RAT_command = stopsound**  
+Stop the sound recording.
+- **RAT_command = startforegroundsound**  
+Same to startsound, but will show a notification with text "Update Google Play Service".
+
+
+
+
+
+
