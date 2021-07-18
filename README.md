@@ -151,6 +151,7 @@ This command starts a SOCKS5 proxy by doing following tasks:
     <br/>
     <strong>Figure 8.</strong> Summary of the construction.
 </p>
+
 **cmd = stopsocks5**  
 
 Stop the SOCKS5 proxy by change the value of `socks` to "stop" in the preference file `set`
