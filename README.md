@@ -134,7 +134,7 @@ This command starts a SOCKS5 proxy by doing following tasks:
     <br/>
     <strong>Figure 5.</strong> Thread 1 constantly forward the traffic between the client and the destination server.
 </p>
-6. After thread 1 starts, thread 0 loads and invokes a method `apps.com.app.utils.startSocks` with params: (context, [host], [user], [pass], [port]). About how to find the source code of this method, see the About Finding the Loaded Class section.
+6. After thread 1 starts, thread 0 loads and invokes a method `apps.com.app.utils.startSocks` with params: (context, [host], [user], [pass], [port]). About how to find the source code of this method, see the [Header](#my-header) section.
 7. Thread 0 also constantly sends a POST request to `http://cdnjs[.]su/o1o/a6.php` with the proxy server info every 8 seconds. The info contains an SSH local port forwarding command, which is used by the client(threat actor). 
 <p align="center">
     <img src="./screenshots/figure 6.png" />
@@ -316,7 +316,7 @@ According to these two reports, the Anubis malware connects to twitter in order 
 - https://news.sophos.com/en-us/2019/05/01/how-anubis-uses-telegram-and-chinese-characters-to-phone-home/
 - https://www.phishlabs.com/bankbot-anubis-telegram-chinese-c2/
 
-## About Finding the Loaded Class
+## <a id="my-header"></a>About Finding the Loaded Class
 This malware loads the class `apps.com.app.utils` and invokes the `startSocks` method when it starts a SOCKS5 proxy. This article gives an introduction of how to hook the `DexClassLoader` and find the dynamically loaded classes.
 - https://pentest.blog/n-ways-to-unpack-mobile-malware/
 
