@@ -1,4 +1,4 @@
-# anubis_Fattura
+# Malware Analysis of Anubis
 Malware Analysis of an Anubis instance.
 ## Application metadata
 - Application Name: Fattura
@@ -40,68 +40,67 @@ If needed, it will set the C2 server address to be this ip address. Otherwise, i
 ### Botnet command
 `wocwvy.czyxoxmbauu.slsa.ukhakhcgifofl` sneds POST request to `http://cdnjs[.]su/o1o/a3.php` or `http://cdnjs[.]su/o1o/a4.php` to receive the botnet commands. It then identifies the commands from the C2 server and performs corresponding malicious tasks. The defualt C2 server is `cdnjs.su`, but it can be changed by accessing the twitter account or a specific botnet command. Below gives a brief summary of all commands.
 
-**cmd= |startinj=[str]|endstartinj**
+**cmd= |startinj=[str]|endstartinj**  
 
-If the value of "name" is "false" in the pref file "set", then put key-value pair ("lock_inj", str) in pref file "set".
+If the value of `name` is "false" in the pref file `set`, meaning the overlay fake view has been shown(see in the Overlay Attack section), then put key-value pair (`lock_inj`, [str]) in the pref file.
 
-**cmd = Send_GO_SMS|number=[num]|text=[text]**
+**cmd = Send_GO_SMS|number=[num]|text=[text]**  
 
 It sends SMS message with text=[text] to phone number=[num]. Then, make a POST request to `http://cdnjs[.]su/o1o/a6.php.php` with this SMS info. Finally, set ringer mode to be silent and will not vibrate.
 
-**cmd = nymBePsG0**
+**cmd = nymBePsG0**  
 
 Make a POST request to `http://cdnjs[.]su/o1o/a6.php`. The POST data is the contacts info(country code, number and name) in the phone.
 
-**cmd = GetSWSGO**
+**cmd = GetSWSGO**  
 
 Make a POST request to `http://cdnjs[.]su/o1o/a6.php`. The POST data is the SMS data(sent, inbox, draft) in the phone.
 
-**cmd = GetSWSGO|telbookgotext=[str]|endtextbook**
+**cmd = GetSWSGO|telbookgotext=[str]|endtextbook**  
 
 Send a SMS message to every contact in the contact list with the text [str]. Then it sends a POST request to `http://cdnjs[.]su/o1o/a6.php` to tell the C2 server whether it succeeds or not.
 
-**cmd = getapps**
+**cmd = getapps**  
 
 Get a list of the package name of all installed applications. Make a POST request to `http://cdnjs[.]su/o1o/a6.php`. The POST data is that list.
 
-**cmd = getpermissions**
+**cmd = getpermissions**  
 
 Get a list of the current state of all permissions i.e. whether they're granted or not. Make a POST request to `http://cdnjs[.]su/o1o/a6.php` with the list.
 
-**cmd = startaccessibility**
+**cmd = startaccessibility**  
 
-If the value of "startRequest" in preferences file "set" contains "Access=0", change it to "Access=1". Then it opens the accessibility settings and request the accessibility.
+If the value of `startRequest` in preferences file `set` contains "Access=0", change it to "Access=1". Then it opens the accessibility settings and request the accessibility.
 
-**cmd = startpermission**
+**cmd = startpermission**  
 
-If the value of "startRequest" in Preferences "set" contains "Perm=0", change it to "Perm=1". Then it will ask the user to allow an app to ignore battery optimizations (that is, put them on the whitelist of apps shown by `ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS`).
+If the value of `startRequest` in Preferences "`set`" contains "Perm=0", change it to "Perm=1". Then it will ask the user to allow an app to ignore battery optimizations (that is, put them on the whitelist of apps shown by `ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS`).
 
-**cmd =ALERT|title=[title]|text=[content]**
+**cmd =ALERT|title=[title]|text=[content]**  
 
 Create an alert dialog with title=[title] and content=[content].
 
-**cmd = PUSH|title=[title]|text=[text]|icon=[appname]**
+**cmd = PUSH|title=[title]|text=[text]|icon=[appname]**  
 
 Post a notification to be shown in the status bar with title=[title] and text=[text]. Get the notification icon from `http://cdnjs[.]su/icon/[appname].png`.
 
-**cmd = startAutoPush|AppName=[appname]|EndAppName**
+**cmd = startAutoPush|AppName=[appname]|EndAppName**  
 
-Post a notification to be shown in the status bar with title="Urgent message!" and text="Confirm your account".
-It will identify the language setting of the phone and show the text in different language. The notification icon is got from `http://cdnjs[.]su/icon/[appname].png`.
+Post a notification to be shown in the status bar with title="Urgent message!" and text="Confirm your account". It will identify the language setting of the phone and show the text in different language. The notification icon is got from `http://cdnjs[.]su/icon/[appname].png`.
 
-**cmd = RequestPermissionInj**
+**cmd = RequestPermissionInj**  
 
 Request Usage access, which allows this malware to track what other apps you're using and how often, as well as your carrier, language settings, and other details.
 
-**cmd = RequestPermissionGPS**
+**cmd = RequestPermissionGPS**  
 
 Request gps permission.
 
-**cmd = |ussd=[USSD]]|endUssD**
+**cmd = |ussd=[USSD]]|endUssD**  
 
 Make a USSD call to [USSD] and set the ringer mode to be silent and not vibrate. Then make a POST request to `http://cdnjs[.]su/o1o/a6.php` to tell the server that it has finished the call.
 
-**cmd= |sockshost=[host]|user=[user]|pass=[pass]|port=[port]|endssh**
+**cmd= |sockshost=[host]|user=[user]|pass=[pass]|port=[port]|endssh**  
 
 This command starts a SOCKS5 proxy by doing following tasks:
 1. Create a thread(denoted as thread 0) which creates a server socket and bound to the loacl port 34500. Once a client connects, create and start a new thread(denoted as thread 1).
@@ -110,41 +109,41 @@ This command starts a SOCKS5 proxy by doing following tasks:
 4. Thread 1 send a response msg to the client.
 5. Thread 1 create a new socket that connect to the destination ip and port. It then constantly forwards all data from the client to the destination. It also create a new thread(denoted as thread 2) to forward the data from the destination to the client. 
 6. After thread 1 starts, thread 0 loads and invokes a method apps.com.app.utils.startSocks with params: (context, [host], [user], [pass], [port]). I don't know how to find the source code of this method(TODO).
-7. Thread 0 also constantly sends a POST request to http://cdnjs[.]su/o1o/a6.php with the proxy server info every 8 seconds. The info contains an SSH local port forwarding command, which is used by the client(threat actor). 
+7. Thread 0 also constantly sends a POST request to `http://cdnjs[.]su/o1o/a6.php` with the proxy server info every 8 seconds. The info contains an SSH local port forwarding command, which is used by the client(threat actor). 
 
-**cmd = stopsocks5**
+**cmd = stopsocks5**  
 
-Stop the SOCKS5 proxy by change the value of "socks" to "stop" in the preference file "set"
+Stop the SOCKS5 proxy by change the value of `socks` to "stop" in the preference file `set`
 
-**cmd = |spam=[text]|endspam**
+**cmd = |spam=[text]|endspam**  
 
 Make a POST request to  `http://cdnjs[.]su/o1o/a15.php` to get the target phone numbers and send spam SMS message to those numbers.
 
-**cmd = |recordsound=[seconds]]|endrecord**
+**cmd = |recordsound=[seconds]]|endrecord**  
 
 Record sound for [seconds] seconds.
 
-**cmd = |replaceurl=[newurl]|endurl**
+**cmd = |replaceurl=[newurl]|endurl**  
 
-Change the value of "url" and "urls" to [newurl] in the preference file "set". This command changes the C2 server address that is stored in local storage.
+Change the value of `url` and `urls` to [newurl] in the preference file `set`. This command changes the C2 server address that is stored in local storage.
 
-**cmd = |startapplication=[app]|endapp**
+**cmd = |startapplication=[app]|endapp**  
 
 Start the [app] application.
 
-**cmd = killBot**
+**cmd = killBot**  
 
-Clear the value of "url", "urls" and "urlInj" in the preference file "set". Then stop the wfveenegvz service.
+Clear the value of `url`, `urls` and `urlInj` in the preference file `set`. Then stop the wfveenegvz service.
 
-**cmd = getkeylogger**
+**cmd = getkeylogger**  
 
-Read the file "keys.log", which is a log file of the recorded keystrokes. Then make a POST request to `http://cdnjs[.]su/o1o/a12.php`. The POST data is the unique bot id and the content of the file "keys.log".
+Read the file `keys.log`, which is a log file of the recorded keystrokes. Then make a POST request to `http://cdnjs[.]su/o1o/a12.php`. The POST data is the unique bot id and the content of the file `keys.log`.
 
 The keylogger is implemented in `wocwvy.czyxoxmbauu.slsa.egxltnv `accessibility service. The onAccessibilityEvent function first gets the package name of the accessibilityEvent.
 
 Then it identifies the type of the accessibilityEvent. If it is `TYPE_VIEW_CLICKED`(click event), it stores the keystrokes info and corresponding timestamp in the file `keys.log`. Similarly, it also stores the infomation of view focus event and view text change event.
 
-**cmd = |startrat=[null]|endrat=[websocket]|endurl**
+**cmd = |startrat=[null]|endrat=[websocket]|endurl**  
 
 The "rat" in this command means Remote Access Trojan(RAT).
 It send a POST request to `[websocket]/o1o/a2.php` and get the response, the post data is the bot id. The response is the RAT command.
@@ -165,6 +164,67 @@ Start to record the sound.
 Stop the sound recording.
 - **RAT_command = startforegroundsound**  
 Same to startsound, but will show a notification with text "Update Google Play Service".
+
+**cmd = startforward=[number]|endforward**
+
+Set ringer mode to be silent and will not vibrate. Make a call to [number]
+
+**cmd = stopforward**
+
+Stop the call.
+
+**cmd = |openbrowser=[url]|endbrowser**
+
+Open the [url] in web browser.
+
+**cmd = |openactivity=[url]|endactivity**
+
+Open the [url] by calling `webView.loadUrl()`.
+
+**cmd = |cryptokey=[key]:[lock_amount]:[lock_btc]|endcrypt**
+
+Encrypt files stored in the device and SD card by using the key. The encrpyted files have the .AnubisCrypt file extension. Then it deletes the original files. After this has been done, the victim user can no longer access those files. This is a feature of ransomware.
+
+**cmd = |decryptokey=[key]|enddecrypt**
+
+Decrypt those previously encrypted files.
+
+**cmd = getIP**
+
+Access `http://en.utrace.de` to get the ip address of the victim device. Make a POST request to `http://cdnjs[.]su/o1o/a6.php`, the POST data is the ip info.
+
+
+### Prevent Uninstall
+
+The `wocwvy.czyxoxmbauu.slsa.egxltnv` accessibility service prevents the malware from being uninstalled. 
+
+### Overlay Attack
+Similar to Timpdoor, this malware identifies the installed banking applications in the device. Once one of those banking app is running by the user, it plays an overlay attack. Below is how it actually conducts the attack.
+
+After the malware receives **cmd = PUSH|title=[title]|text=[text]|icon=[appname]** from the server, it will store the string appname as the value of `str_push_fish` in the preference file `set`. This key-value pair will then be used in `wocwvy.czyxoxmbauu.slsa.ncec.ozkgyjpxtyxajmm` to retreive the fake webview of the corresponding banking application from the C2 server and show it to the victim user.
+
+### Evade Analysis Environment
+The `wocwvy.czyxoxmbauu.slsa.blyvffs` sevice used motion sensor to determine whether it is running in an analysis environment. This is a feature of Anubis.
+
+## Dynamic Traffic Analysis
+
+I install the app in Android studio AVD(Android 8.1, API 27) and use Fiddler to capture the traffic of this app. 
+
+After clicking its icon, it asks the user to give it permissions. If granted, it hides its icon. The user can't open the app infomation page in setting, thus can't uninstall it. The Prevent Uninstall section describes how this functionality works.
+
+According to Fiddler, it keeps sending a POST request to `http://cdnjs[.]su/o1o/a16.php` and try to connect to `http://twitter.com:443`, which matches the static analysis result.
+
+cdnjs is a free and open-source software content delivery network (CDN) hosted by Cloudflare. The malware fails to find `cdnjs.su` because this C2 server has been turned down.
+
+## About Twitter Channel
+
+According to these two reports, the Anubis malware connects to twitter in order to fetch the address of its C2 server from a public twitter account. 
+- https://news.sophos.com/en-us/2019/05/01/how-anubis-uses-telegram-and-chinese-characters-to-phone-home/
+- https://www.phishlabs.com/bankbot-anubis-telegram-chinese-c2/
+
+## About Finding the Loaded Class
+This malware loads the class `apps.com.app.utils` and invokes the `startSocks` method when it starts a SOCKS5 proxy. This article gives an introduction of how to hook the DexClassLoader and find the dynamically loaded classes.
+- https://pentest.blog/n-ways-to-unpack-mobile-malware/
 
 
 
