@@ -134,7 +134,7 @@ This command starts a SOCKS5 proxy by doing following tasks:
     <br/>
     <strong>Figure 5.</strong> Thread 1 constantly forward the traffic between the client and the destination server.
 </p>
-6. After thread 1 starts, thread 0 loads and invokes a method `apps.com.app.utils.startSocks` with params: (context, [host], [user], [pass], [port]). About how to find the source code of this method, see the [Header](#my-header) section.
+6. After thread 1 starts, thread 0 loads and invokes a method `apps.com.app.utils.startSocks` with params: (context, [host], [user], [pass], [port]). About how to find the source code of this method, see the [Header](#About-Finding-the-Loaded-Class) section.
 7. Thread 0 also constantly sends a POST request to `http://cdnjs[.]su/o1o/a6.php` with the proxy server info every 8 seconds. The info contains an SSH local port forwarding command, which is used by the client(threat actor). 
 <p align="center">
     <img src="./screenshots/figure 6.png" />
