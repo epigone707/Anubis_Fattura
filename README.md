@@ -216,6 +216,7 @@ Start a virtual network computing (VNC) that can see the screen of the victim's 
     <br/>
     <strong>Figure 12.</strong> Send the screenshot.
 </p>
+
 - **RAT_command = stopscreenVNC**  
 Stop the VNC.
 - **RAT_command = startsound**  
