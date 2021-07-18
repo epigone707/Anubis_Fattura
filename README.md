@@ -85,7 +85,7 @@ If the value of `startRequest` in preferences file `set` contains "Access=0", ch
 
 **cmd = startpermission**  
 
-If the value of `startRequest` in Preferences "`set`" contains "Perm=0", change it to "Perm=1". Then it will ask the user to allow an app to ignore battery optimizations (that is, put them on the whitelist of apps shown by `ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS`).
+If the value of `startRequest` in Preferences `set` contains "Perm=0", change it to "Perm=1". Then it will ask the user to allow an app to ignore battery optimizations (that is, put them on the whitelist of apps shown by `ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS`).
 
 **cmd = ALERT|title=[title]|text=[content]**  
 
@@ -134,8 +134,8 @@ This command starts a SOCKS5 proxy by doing following tasks:
     <br/>
     <strong>Figure 5.</strong> Thread 1 constantly forward the traffic between the client and the destination server.
 </p>
-6. After thread 1 starts, thread 0 loads and invokes a method `apps.com.app.utils.startSocks` with params: (context, [host], [user], [pass], [port]).
-7. Thread 0 also constantly sends a POST request to `http://cdnjs[.]su/o1o/a6.php` with the proxy server info every 8 seconds. The info contains an SSH local port forwarding command, which is used by the client(threat actor). 
+6. After thread 1 starts, thread 0 loads and invokes a method <code>apps.com.app.utils.startSocks</code> with params: (context, [host], [user], [pass], [port]).
+7. Thread 0 also constantly sends a POST request to <code>http://cdnjs[.]su/o1o/a6.php</code> with the proxy server info every 8 seconds. The info contains an SSH local port forwarding command, which is used by the client(threat actor). 
 <p align="center">
     <img src="./screenshots/figure 6.png" />
     <br/>
@@ -178,7 +178,7 @@ Clear the value of `url`, `urls` and `urlInj` in the preference file `set`. Then
 
 **cmd = getkeylogger**  
 
-Read the file `keys.log`, which is a log file of the recorded keystrokes. Then make a POST request to `http://cdnjs[.]su/o1o/a12.php`. The POST data is the unique bot id and the content of the file `keys.log`.
+Read the file <code>keys.log</code>, which is a log file of the recorded keystrokes. Then make a POST request to <code>http://cdnjs[.]su/o1o/a12.php</code>. The POST data is the unique bot id and the content of the file <code>keys.log</code>.
 
 The keylogger is implemented in `wocwvy.czyxoxmbauu.slsa.egxltnv `accessibility service. The onAccessibilityEvent function first gets the package name of the accessibilityEvent.
 <p align="center">
@@ -186,7 +186,7 @@ The keylogger is implemented in `wocwvy.czyxoxmbauu.slsa.egxltnv `accessibility 
     <br/>
     <strong>Figure 9.</strong> Get the package name.
 </p>
-Then it identifies the type of the accessibilityEvent. If it is `TYPE_VIEW_CLICKED`(click event), it stores the keystrokes info and corresponding timestamp in the file `keys.log`. Similarly, it also stores the infomation of view focus event and view text change event.
+Then it identifies the type of the accessibilityEvent. If it is <code>TYPE_VIEW_CLICKED</code>(click event), it stores the keystrokes info and corresponding timestamp in the file <code>keys.log</code>. Similarly, it also stores the infomation of view focus event and view text change event.
 <p align="center">
     <img src="./screenshots/figure 10.png" />
     <br/>
