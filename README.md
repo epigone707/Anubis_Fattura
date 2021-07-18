@@ -318,7 +318,7 @@ According to these two reports, the Anubis malware connects to twitter in order 
 - https://news.sophos.com/en-us/2019/05/01/how-anubis-uses-telegram-and-chinese-characters-to-phone-home/
 - https://www.phishlabs.com/bankbot-anubis-telegram-chinese-c2/
 
-## About<a id="my-anchor"></a>
+## About Finding the Loaded Class<a id="my-anchor"></a>
 This malware loads the class `apps.com.app.utils` and invokes the `startSocks` method when it starts a SOCKS5 proxy. This article gives an introduction of how to hook the `DexClassLoader` and find the dynamically loaded classes.
 - https://pentest.blog/n-ways-to-unpack-mobile-malware/
 
