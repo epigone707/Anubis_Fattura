@@ -45,11 +45,11 @@ If needed, it will set the C2 server address to be this ip address. Otherwise, i
 <p align="center">
     <img src="./screenshots/figure 2.png" />
     <br/>
-    <strong>Figure 2.</strong> Set the C2 server address
+    <strong>Figure 2.</strong> Set the C2 server address.
 </p>
 
 ### Botnet command
-`wocwvy.czyxoxmbauu.slsa.ukhakhcgifofl` sneds POST request to `http://cdnjs[.]su/o1o/a3.php` or `http://cdnjs[.]su/o1o/a4.php` to receive the botnet commands. It then identifies the commands from the C2 server and performs corresponding malicious tasks. The defualt C2 server is `cdnjs.su`, but it can be changed by accessing the twitter account or a specific botnet command. Below gives a brief summary of all commands.
+`wocwvy.czyxoxmbauu.slsa.ukhakhcgifofl` sends POST request to `http://cdnjs[.]su/o1o/a3.php` or `http://cdnjs[.]su/o1o/a4.php` to receive the botnet commands. It then identifies the commands from the C2 server and performs corresponding malicious tasks. The defualt C2 server is `cdnjs.su`, but it can be changed by accessing the twitter account or a specific botnet command. Below gives a brief summary of all commands.
 
 **cmd= |startinj=[str]|endstartinj**  
 
